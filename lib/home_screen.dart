@@ -25,12 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _addDate() async {
-    await SQLHelper.createData(_nameController.text, _descsController.text);
+    await SQLHelper.createData(_nameController.text, _emailController.text, _addressController.text);
     _refreshData();
   }
 
   Future<void> _updateDate(int id) async {
-    await SQLHelper.updateData(id, _nameController.text, _descsController.text);
+    await SQLHelper.updateData(id, _nameController.text, _emailController.text, _addressController.text);
     _refreshData();
   }
 
@@ -44,14 +44,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descsController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
   void showBottomSheet(int? id) async {
     if (id != null) {
       final existingData =
           _allData.firstWhere((element) => element['id'] == id);
       _nameController.text = existingData['name'];
-      _descsController.text = existingData['descs'];
+      _emailController.text = existingData['email'];
+      _addressController.text = existingData['address'];
     }
 
     showModalBottomSheet(
@@ -78,11 +80,17 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(height: 10),
             TextField(
-              controller: _descsController,
-              maxLines: 4,
+              controller: _emailController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: "Descsription",
+                hintText: "Email",
+              ),
+            ),
+            SizedBox(height: 20),TextField(
+              controller: _addressController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "Address",
               ),
             ),
             SizedBox(height: 20),
@@ -97,7 +105,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
 
                   _nameController.text = "";
-                  _descsController.text = "";
+                  _emailController.text = "";
+                  _addressController.text = "";
 
                   Navigator.of(context).pop();
                   print("Data Added");
@@ -122,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Color(0xFFECEAF4),
       appBar: AppBar(
-        title: Text("CRUD OP"),
+        title: Text("Contact Buddy!"),
       ),
       body: _isLoading
           ? Center(
@@ -142,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  subtitle: Text(_allData[index]['descs']),
+                  subtitle: Text(_allData[index]['address']),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
