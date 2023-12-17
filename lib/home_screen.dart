@@ -25,12 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _addDate() async {
-    await SQLHelper.createData(_titleController.text, _descController.text);
+    await SQLHelper.createData(_nameController.text, _descsController.text);
     _refreshData();
   }
 
   Future<void> _updateDate(int id) async {
-    await SQLHelper.updateData(id, _titleController.text, _descController.text);
+    await SQLHelper.updateData(id, _nameController.text, _descsController.text);
     _refreshData();
   }
 
@@ -43,15 +43,15 @@ class _HomeScreenState extends State<HomeScreen> {
     _refreshData();
   }
 
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _descController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descsController = TextEditingController();
 
   void showBottomSheet(int? id) async {
     if (id != null) {
       final existingData =
           _allData.firstWhere((element) => element['id'] == id);
-      _titleController.text = existingData['title'];
-      _descController.text = existingData['desc'];
+      _nameController.text = existingData['name'];
+      _descsController.text = existingData['descs'];
     }
 
     showModalBottomSheet(
@@ -70,19 +70,19 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             TextField(
-              controller: _titleController,
+              controller: _nameController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: "Title",
+                hintText: "Full Name",
               ),
             ),
             SizedBox(height: 10),
             TextField(
-              controller: _descController,
+              controller: _descsController,
               maxLines: 4,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: "Description",
+                hintText: "Descsription",
               ),
             ),
             SizedBox(height: 20),
@@ -96,8 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     await _updateDate(id);
                   }
 
-                  _titleController.text = "";
-                  _descController.text = "";
+                  _nameController.text = "";
+                  _descsController.text = "";
 
                   Navigator.of(context).pop();
                   print("Data Added");
@@ -136,13 +136,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: Padding(
                     padding: EdgeInsets.symmetric(vertical: 5),
                     child: Text(
-                      _allData[index]['title'],
+                      _allData[index]['name'],
                       style: TextStyle(
                         fontSize: 20,
                       ),
                     ),
                   ),
-                  subtitle: Text(_allData[index]['desc']),
+                  subtitle: Text(_allData[index]['descs']),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
