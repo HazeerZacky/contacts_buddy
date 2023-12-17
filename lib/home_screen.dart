@@ -25,12 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _addDate() async {
-    await SQLHelper.createData(_nameController.text, _emailController.text, _addressController.text);
+    await SQLHelper.createData(_nameController.text, _emailController.text, _addressController.text, int.parse(_phoneController.text));
     _refreshData();
   }
 
   Future<void> _updateDate(int id) async {
-    await SQLHelper.updateData(id, _nameController.text, _emailController.text, _addressController.text);
+    await SQLHelper.updateData(id, _nameController.text, _emailController.text, _addressController.text, int.parse(_phoneController.text));
     _refreshData();
   }
 
@@ -46,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
 
   void showBottomSheet(int? id) async {
     if (id != null) {
@@ -54,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _nameController.text = existingData['name'];
       _emailController.text = existingData['email'];
       _addressController.text = existingData['address'];
+      _phoneController.text = existingData['phone'].toString();
     }
 
     showModalBottomSheet(
@@ -94,6 +96,14 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(height: 20),
+            SizedBox(height: 20),TextField(
+              controller: _phoneController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "Phone",
+              ),
+            ),
+            SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 onPressed: () async {
@@ -107,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   _nameController.text = "";
                   _emailController.text = "";
                   _addressController.text = "";
+                  _phoneController.text = "";
 
                   Navigator.of(context).pop();
                   print("Data Added");

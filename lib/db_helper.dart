@@ -7,6 +7,7 @@ class SQLHelper {
       name TEXT,
       email TEXT,
       address TEXT,
+      phone INTEGER,
       createAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     ) """);
   }
@@ -18,10 +19,10 @@ class SQLHelper {
     });
   }
 
-  static Future<int> createData(String name, String email, String? address) async {
+  static Future<int> createData(String name, String email, String? address, int? phone) async {
     final db = await SQLHelper.db();
 
-    final data = {'name': name, 'email': email, 'address': address};
+    final data = {'name': name, 'email': email, 'address': address, 'phone': phone};
     final id = await db.insert('data', data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return id;
@@ -37,12 +38,13 @@ class SQLHelper {
     return db.query("data", where: "id = ?", whereArgs: [id], limit: 1);
   }
 
-  static Future<int> updateData(int id, String name, String email, String? address) async {
+  static Future<int> updateData(int id, String name, String email, String address, int? phone) async {
     final db = await SQLHelper.db();
     final data = {
       'name': name,
       'email': email,
       'address': address,
+      'phone': phone,
       'createAt': DateTime.now().toString()
     };
     final result =
