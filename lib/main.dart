@@ -1,4 +1,5 @@
-import 'package:contacts_buddy/home_screen.dart';
+// main.dart
+import 'package:contacts_buddy/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.indigo),
-      home: HomeScreen(),
+      home: SplashScreen(),
     );
   }
 }

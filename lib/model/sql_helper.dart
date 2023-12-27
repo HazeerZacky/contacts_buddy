@@ -19,18 +19,24 @@ class SQLHelper {
     });
   }
 
-  static Future<int> createData(String name, String email, String? address, int? phone) async {
+  static Future<int> createData(
+      String name, String email, String? address, int? phone) async {
     final db = await SQLHelper.db();
 
-    final data = {'name': name, 'email': email, 'address': address, 'phone': phone};
+    final data = {
+      'name': name,
+      'email': email,
+      'address': address,
+      'phone': phone
+    };
     final id = await db.insert('data', data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return id;
   }
 
-  static Future<List<Map<String, dynamic>>> getAllData() async {  
+  static Future<List<Map<String, dynamic>>> getAllData(String? orderby) async {
     final db = await SQLHelper.db();
-    return db.query("data", orderBy: 'id');
+    return db.query("data", orderBy: orderby);
   }
 
   static Future<List<Map<String, dynamic>>> getSingleData(int id) async {
@@ -38,7 +44,8 @@ class SQLHelper {
     return db.query("data", where: "id = ?", whereArgs: [id], limit: 1);
   }
 
-  static Future<int> updateData(int id, String name, String email, String address, int? phone) async {
+  static Future<int> updateData(
+      int id, String name, String email, String address, int? phone) async {
     final db = await SQLHelper.db();
     final data = {
       'name': name,
